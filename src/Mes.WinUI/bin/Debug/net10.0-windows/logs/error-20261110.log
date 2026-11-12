@@ -1,0 +1,16 @@
+[2026-11-10 23:20:43] 打开串口扫码枪
+System.IO.FileNotFoundException: Could not find file 'COM3'.
+File name: 'COM3'
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at Mes.WinUI.SerialScanListener..ctor(String portName, Int32 baudRate, ScanCaptureOptions options) in C:\Users\liang\IndustrialMES\src\Mes.WinUI\Scanning\SerialScanListener.cs:line 30
+   at Mes.WinUI.StationGateForm.OpenSerial() in C:\Users\liang\IndustrialMES\src\Mes.WinUI\Forms\StationGateForm.cs:line 153
+
+[2026-11-10 23:22:17] 打开串口扫码枪
+System.IO.FileNotFoundException: Could not find file 'COM3'.
+File name: 'COM3'
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at Mes.WinUI.SerialScanListener..ctor(String portName, Int32 baudRate, ScanCaptureOptions options) in C:\Users\liang\IndustrialMES\src\Mes.WinUI\Scanning\SerialScanListener.cs:line 30
+   at Mes.WinUI.StationGateForm.OpenSerial() in C:\Users\liang\IndustrialMES\src\Mes.WinUI\Forms\StationGateForm.cs:line 153
+

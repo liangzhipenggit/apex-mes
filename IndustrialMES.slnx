@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Mes.BLL/Mes.BLL.csproj" />
+    <Project Path="src/Mes.Common/Mes.Common.csproj" />
+    <Project Path="src/Mes.DAL/Mes.DAL.csproj" />
+    <Project Path="src/Mes.Models/Mes.Models.csproj" />
+    <Project Path="src/Mes.WinUI/Mes.WinUI.csproj" />
+  </Folder>
+</Solution>

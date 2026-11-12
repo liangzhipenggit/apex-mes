@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Mes.DAL</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SqlSugarCore" Version="5.1.4.207" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mes.Common\Mes.Common.csproj" />
+    <ProjectReference Include="..\Mes.Models\Mes.Models.csproj" />
+  </ItemGroup>
+
+</Project>
