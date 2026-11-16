@@ -60,7 +60,7 @@ public sealed class BarTenderLabelPrinter : IDisposable
         {
             ErrorLog.Write(ex, "BarTender COM 打印");
             Dispose();
-            return new PrintOutcome(false, "BarTender 打印失败。请确认模板包含命名子串 MaterialCode、BatchNo、Barcode，详细信息已写入本地日志。");
+            return new PrintOutcome(false, "BarTender 打印失败。请确认模板包含命名子串 MaterialCode、BatchNo、Barcode，详细信息已写入日志。");
         }
     }
 
@@ -111,7 +111,7 @@ public sealed class BarTenderLabelPrinter : IDisposable
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "BarTender 命令行打印");
-            return new PrintOutcome(false, "BarTender 命令行打印失败，详细信息已写入本地日志。");
+            return new PrintOutcome(false, "BarTender 命令行打印失败，详细信息已写入日志。");
         }
     }
 

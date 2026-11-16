@@ -1,3 +1,5 @@
+using Mes.BLL;
+
 namespace Mes.WinUI;
 
 /// <summary>系统设置：全局字体家族、字号、粗体。</summary>
@@ -116,6 +118,7 @@ public class SystemSettingsForm : SecureForm
     {
         var settings = ReadValues();
         UiSettings.Save(settings);
+        DbActivityLog.SaveUi(settings.FontFamily, settings.FontSize, settings.FontBold);
         UiTheme.ApplySettings(settings);
         RefreshPreview();
         Font = UiTheme.ContentFont();

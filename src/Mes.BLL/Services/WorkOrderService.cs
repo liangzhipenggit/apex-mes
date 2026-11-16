@@ -76,7 +76,7 @@ public class WorkOrderService
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "查询工单");
-            return ApiResult<PageResult<WorkOrder>>.Fail("查询工单失败，详细信息已写入本地日志。");
+            return ApiResult<PageResult<WorkOrder>>.Fail("查询工单失败，详细信息已写入日志。");
         }
     }
 
@@ -103,7 +103,7 @@ public class WorkOrderService
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "读取工单");
-            return ApiResult<WorkOrder>.Fail("读取工单失败，详细信息已写入本地日志。");
+            return ApiResult<WorkOrder>.Fail("读取工单失败，详细信息已写入日志。");
         }
     }
 
@@ -154,7 +154,7 @@ public class WorkOrderService
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "保存工单");
-            return ApiResult.Fail("保存工单失败，详细信息已写入本地日志。");
+            return ApiResult.Fail("保存工单失败，详细信息已写入日志。");
         }
     }
 
@@ -188,7 +188,7 @@ public class WorkOrderService
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "删除工单");
-            return ApiResult.Fail("删除工单失败，详细信息已写入本地日志。");
+            return ApiResult.Fail("删除工单失败，详细信息已写入日志。");
         }
     }
 

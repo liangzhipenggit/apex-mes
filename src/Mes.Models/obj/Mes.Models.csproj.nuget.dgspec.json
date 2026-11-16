@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\liang\\IndustrialMES\\src\\Mes.Models\\Mes.Models.csproj": {}
+    "D:\\IndustrialMES\\src\\Mes.Models\\Mes.Models.csproj": {}
   },
   "projects": {
-    "C:\\Users\\liang\\IndustrialMES\\src\\Mes.Models\\Mes.Models.csproj": {
+    "D:\\IndustrialMES\\src\\Mes.Models\\Mes.Models.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\liang\\IndustrialMES\\src\\Mes.Models\\Mes.Models.csproj",
+        "projectUniqueName": "D:\\IndustrialMES\\src\\Mes.Models\\Mes.Models.csproj",
         "projectName": "Mes.Models",
-        "projectPath": "C:\\Users\\liang\\IndustrialMES\\src\\Mes.Models\\Mes.Models.csproj",
+        "projectPath": "D:\\IndustrialMES\\src\\Mes.Models\\Mes.Models.csproj",
         "packagesPath": "C:\\Users\\liang\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\liang\\IndustrialMES\\src\\Mes.Models\\obj\\",
+        "outputPath": "D:\\IndustrialMES\\src\\Mes.Models\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -1,5 +1,6 @@
 /*
-    IndustrialMES RBAC + 业务表建表脚本（SQL Server / LocalDB 通用）
+    IndustrialMES 建表脚本（SQL Server）
+    含账号权限、工单、过站扫码、强制过站/PLC、标签打印、系统设置、审计与异常日志。
     ---------------------------------------------------------------
     使用方式：
       1) 本地演示：DemoMode=true，数据落在 %LocalAppData%\IndustrialMES\LocalDb\rbac.json
@@ -135,3 +136,102 @@ CREATE TABLE Mes_WorkOrder (
     IsDeleted     BIT            NOT NULL CONSTRAINT DF_Mes_WorkOrder_IsDeleted DEFAULT (0)
 );
 CREATE UNIQUE INDEX UX_Mes_WorkOrder_OrderNo ON Mes_WorkOrder(OrderNo) WHERE IsDeleted = 0;
+
+/* 过站扫码。Source：扫码框 / 手工 / 全局键盘 / 串口枪 */
+CREATE TABLE Mes_ScanRecord (
+    Id            BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    Barcode       NVARCHAR(128) NOT NULL,
+    Source        NVARCHAR(32)  NOT NULL,
+    PortName      NVARCHAR(32)  NULL,
+    Passed        BIT           NOT NULL,
+    Message       NVARCHAR(500) NULL,
+    CreateTime    DATETIME2     NOT NULL CONSTRAINT DF_Mes_ScanRecord_CreateTime DEFAULT (SYSDATETIME()),
+    CreateUserId  BIGINT        NULL,
+    UpdateTime    DATETIME2     NULL,
+    UpdateUserId  BIGINT        NULL,
+    IsDeleted     BIT           NOT NULL CONSTRAINT DF_Mes_ScanRecord_IsDeleted DEFAULT (0)
+);
+CREATE INDEX IX_Mes_ScanRecord_Barcode ON Mes_ScanRecord(Barcode) WHERE IsDeleted = 0;
+CREATE INDEX IX_Mes_ScanRecord_CreateTime ON Mes_ScanRecord(CreateTime);
+
+/* 强制过站、向 PLC 写入参数。这两项都要临时授权后才允许发生。 */
+CREATE TABLE Mes_RiskOperation (
+    Id                  BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    Operation           NVARCHAR(64)  NOT NULL,
+    Barcode             NVARCHAR(128) NULL,
+    OperatorName        NVARCHAR(64)  NULL,
+    AuthorizerName      NVARCHAR(64)  NOT NULL,
+    AuthorizerRealName  NVARCHAR(64)  NULL,
+    Success             BIT           NOT NULL,
+    Message             NVARCHAR(500) NULL,
+    CreateTime          DATETIME2     NOT NULL CONSTRAINT DF_Mes_RiskOperation_CreateTime DEFAULT (SYSDATETIME()),
+    CreateUserId        BIGINT        NULL,
+    UpdateTime          DATETIME2     NULL,
+    UpdateUserId        BIGINT        NULL,
+    IsDeleted           BIT           NOT NULL CONSTRAINT DF_Mes_RiskOperation_IsDeleted DEFAULT (0)
+);
+CREATE INDEX IX_Mes_RiskOperation_CreateTime ON Mes_RiskOperation(CreateTime);
+
+/* 标签打印。模板参数名与界面一致：MaterialCode、BatchNo、Barcode。 */
+CREATE TABLE Mes_LabelPrint (
+    Id            BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    MaterialCode  NVARCHAR(64)  NOT NULL,
+    BatchNo       NVARCHAR(64)  NULL,
+    Barcode       NVARCHAR(128) NOT NULL,
+    Copies        INT           NOT NULL CONSTRAINT DF_Mes_LabelPrint_Copies DEFAULT (1),
+    Engine        NVARCHAR(32)  NOT NULL,
+    IsPreview     BIT           NOT NULL CONSTRAINT DF_Mes_LabelPrint_IsPreview DEFAULT (0),
+    TemplatePath  NVARCHAR(260) NULL,
+    PrinterName   NVARCHAR(128) NULL,
+    Success       BIT           NOT NULL,
+    Message       NVARCHAR(500) NULL,
+    CreateTime    DATETIME2     NOT NULL CONSTRAINT DF_Mes_LabelPrint_CreateTime DEFAULT (SYSDATETIME()),
+    CreateUserId  BIGINT        NULL,
+    UpdateTime    DATETIME2     NULL,
+    UpdateUserId  BIGINT        NULL,
+    IsDeleted     BIT           NOT NULL CONSTRAINT DF_Mes_LabelPrint_IsDeleted DEFAULT (0)
+);
+CREATE INDEX IX_Mes_LabelPrint_Barcode ON Mes_LabelPrint(Barcode) WHERE IsDeleted = 0;
+CREATE INDEX IX_Mes_LabelPrint_MaterialCode ON Mes_LabelPrint(MaterialCode) WHERE IsDeleted = 0;
+
+/* 系统设置：业务页字体、标签模板、串口枪。 */
+CREATE TABLE Sys_Setting (
+    Id            BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    SettingKey    NVARCHAR(64)   NOT NULL,
+    SettingValue  NVARCHAR(500)  NULL,
+    Remark        NVARCHAR(200)  NULL,
+    CreateTime    DATETIME2      NOT NULL CONSTRAINT DF_Sys_Setting_CreateTime DEFAULT (SYSDATETIME()),
+    CreateUserId  BIGINT         NULL,
+    UpdateTime    DATETIME2      NULL,
+    UpdateUserId  BIGINT         NULL,
+    IsDeleted     BIT            NOT NULL CONSTRAINT DF_Sys_Setting_IsDeleted DEFAULT (0)
+);
+CREATE UNIQUE INDEX UX_Sys_Setting_SettingKey ON Sys_Setting(SettingKey) WHERE IsDeleted = 0;
+
+INSERT INTO Sys_Setting (SettingKey, SettingValue, Remark) VALUES
+(N'Ui.FontFamily', N'Microsoft YaHei UI', N'业务页字体'),
+(N'Ui.FontSize', N'10.5', N'业务页字号'),
+(N'Ui.FontBold', N'0', N'业务页是否加粗，0 否 1 是'),
+(N'Label.FastReportTemplate', N'labels\material.frx', N'FastReport 模板'),
+(N'Label.BarTenderTemplate', N'labels\material.btw', N'BarTender 模板'),
+(N'Label.BarTenderExe', N'', N'bartend.exe 路径，空则走 COM'),
+(N'Label.PrinterName', N'', N'标签打印机，空则用默认打印机'),
+(N'Scan.PortName', N'COM3', N'过站串口扫码枪');
+
+/* 临时授权审计。不保存口令。 */
+CREATE TABLE Sys_AuditLog (
+    Id            BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    Message       NVARCHAR(1000) NOT NULL,
+    CreateTime    DATETIME2      NOT NULL CONSTRAINT DF_Sys_AuditLog_CreateTime DEFAULT (SYSDATETIME()),
+    CreateUserId  BIGINT         NULL
+);
+CREATE INDEX IX_Sys_AuditLog_CreateTime ON Sys_AuditLog(CreateTime);
+
+CREATE TABLE Sys_ErrorLog (
+    Id            BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    Action        NVARCHAR(128) NOT NULL,
+    Detail        NVARCHAR(MAX) NOT NULL,
+    CreateTime    DATETIME2     NOT NULL CONSTRAINT DF_Sys_ErrorLog_CreateTime DEFAULT (SYSDATETIME()),
+    CreateUserId  BIGINT        NULL
+);
+CREATE INDEX IX_Sys_ErrorLog_CreateTime ON Sys_ErrorLog(CreateTime);

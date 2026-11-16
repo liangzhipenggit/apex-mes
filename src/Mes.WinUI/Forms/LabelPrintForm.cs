@@ -139,6 +139,7 @@ public class LabelPrintForm : Form
         var outcome = preview
             ? FastReportLabelPrinter.Preview(path, data, this)
             : FastReportLabelPrinter.PrintSilent(path, data, AppHost.Label.PrinterName);
+        RememberLabel(data, "FastReport", preview, path, outcome);
         ShowOutcome(outcome);
     }
 
@@ -150,6 +151,7 @@ public class LabelPrintForm : Form
 
         var path = Resolve(AppHost.Label.BarTenderTemplate);
         var outcome = _barTender.Print(path, data, AppHost.Label.PrinterName, AppHost.Label.BarTenderExe);
+        RememberLabel(data, "BarTender", false, path, outcome);
         ShowOutcome(outcome);
     }
 
@@ -158,6 +160,23 @@ public class LabelPrintForm : Form
         if (string.IsNullOrWhiteSpace(path))
             return string.Empty;
         return Path.IsPathRooted(path) ? path : Path.Combine(AppContext.BaseDirectory, path);
+    }
+
+    private static void RememberLabel(LabelPrintData data, string engine, bool preview, string template, PrintOutcome outcome)
+    {
+        DbActivityLog.Label(new LabelPrintLog
+        {
+            MaterialCode = data.MaterialCode,
+            BatchNo = data.BatchNo,
+            Barcode = data.Barcode,
+            Copies = data.Copies,
+            Engine = engine,
+            IsPreview = preview,
+            TemplatePath = template,
+            PrinterName = AppHost.Label.PrinterName,
+            Success = outcome.Success,
+            Message = outcome.Message
+        });
     }
 
     private void ShowOutcome(PrintOutcome outcome)

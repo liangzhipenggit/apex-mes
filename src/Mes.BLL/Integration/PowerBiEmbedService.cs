@@ -83,7 +83,7 @@ public class PowerBiEmbedService
             return new PowerBiEmbedResult
             {
                 Success = false,
-                Message = "无法打开 Power BI 报表，详细信息已写入本地日志。"
+                Message = "无法打开 Power BI 报表，详细信息已写入日志。"
             };
         }
     }

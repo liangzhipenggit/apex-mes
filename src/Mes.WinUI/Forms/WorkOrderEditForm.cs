@@ -172,7 +172,7 @@ public class WorkOrderEditForm : AntdUI.Window
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "保存工单");
-            UiNotify.Error(this, "保存工单失败，详细信息已写入本地日志。");
+            UiNotify.Error(this, "保存工单失败，详细信息已写入日志。");
         }
         finally
         {

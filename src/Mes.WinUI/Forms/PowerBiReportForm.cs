@@ -71,7 +71,7 @@ public class PowerBiReportForm : Form
             ErrorLogWrite(ex);
             _status.Icon = AntdUI.TType.Error;
             _status.Text = "打开报表失败。";
-            UiNotify.Error(FindForm(), "打开报表失败，详细信息已写入本地日志。");
+            UiNotify.Error(FindForm(), "打开报表失败，详细信息已写入日志。");
         }
     }
 

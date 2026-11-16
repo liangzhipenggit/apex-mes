@@ -73,7 +73,7 @@ public class UserService
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "查询用户");
-            return ApiResult<PageResult<UserListItem>>.Fail("查询用户失败，详细信息已写入本地日志。");
+            return ApiResult<PageResult<UserListItem>>.Fail("查询用户失败，详细信息已写入日志。");
         }
     }
 
@@ -120,7 +120,7 @@ public class UserService
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "读取用户");
-            return ApiResult<UserSaveModel>.Fail("读取用户失败，详细信息已写入本地日志。");
+            return ApiResult<UserSaveModel>.Fail("读取用户失败，详细信息已写入日志。");
         }
     }
 
@@ -198,8 +198,7 @@ public class UserService
             if (exists)
                 return ApiResult.Fail("用户名已存在。");
 
-            await dbClient.Ado.BeginTranAsync();
-            try
+            await DbWrite.RunAsync(async tran =>
             {
                 long userId;
                 if (model.Id == 0)
@@ -213,16 +212,13 @@ public class UserService
                         CreateTime = DateTime.Now,
                         CreateUserId = AppSession.UserId
                     };
-                    userId = await dbClient.Insertable(entity).ExecuteReturnBigIdentityAsync();
+                    userId = await tran.Insertable(entity).ExecuteReturnBigIdentityAsync();
                 }
                 else
                 {
-                    var entity = await dbClient.Queryable<SysUser>().FirstAsync(u => u.Id == model.Id && u.IsDeleted == false);
+                    var entity = await tran.Queryable<SysUser>().FirstAsync(u => u.Id == model.Id && u.IsDeleted == false);
                     if (entity == null)
-                    {
-                        await dbClient.Ado.RollbackTranAsync();
-                        return ApiResult.Fail("用户不存在或已删除。");
-                    }
+                        throw new InvalidOperationException("用户不存在或已删除。");
 
                     entity.UserName = model.UserName;
                     entity.RealName = model.RealName;
@@ -231,30 +227,25 @@ public class UserService
                     entity.UpdateUserId = AppSession.UserId;
                     if (!string.IsNullOrWhiteSpace(model.Password))
                         entity.PasswordHash = PasswordHasher.Hash(model.Password);
-                    await dbClient.Updateable(entity).ExecuteCommandAsync();
+                    await tran.Updateable(entity).ExecuteCommandAsync();
                     userId = entity.Id;
-                    await dbClient.Deleteable<SysUserRole>().Where(ur => ur.UserId == userId).ExecuteCommandAsync();
+                    await tran.Deleteable<SysUserRole>().Where(ur => ur.UserId == userId).ExecuteCommandAsync();
                 }
 
                 if (model.RoleIds.Count > 0)
                 {
                     var links = model.RoleIds.Distinct().Select(rid => new SysUserRole { UserId = userId, RoleId = rid }).ToList();
-                    await dbClient.Insertable(links).ExecuteCommandAsync();
+                    await tran.Insertable(links).ExecuteCommandAsync();
                 }
-
-                await dbClient.Ado.CommitTranAsync();
-                return ApiResult.Ok("保存成功。");
-            }
-            catch
-            {
-                await dbClient.Ado.RollbackTranAsync();
-                throw;
-            }
+            });
+            return ApiResult.Ok("保存成功。");
         }
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "保存用户");
-            return ApiResult.Fail("保存用户失败，详细信息已写入本地日志。");
+            if (ex is InvalidOperationException)
+                return ApiResult.Fail(ex.Message);
+            return ApiResult.Fail("保存用户失败，详细信息已写入日志。");
         }
     }
 
@@ -293,7 +284,7 @@ public class UserService
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "删除用户");
-            return ApiResult.Fail("删除用户失败，详细信息已写入本地日志。");
+            return ApiResult.Fail("删除用户失败，详细信息已写入日志。");
         }
     }
 

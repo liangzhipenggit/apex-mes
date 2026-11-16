@@ -158,7 +158,7 @@ public class WorkOrderForm : SecureForm
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "查询工单");
-            UiNotify.Error(OwnerForm as Form ?? this, "查询工单失败，详细信息已写入本地日志。");
+            UiNotify.Error(OwnerForm as Form ?? this, "查询工单失败，详细信息已写入日志。");
         }
         finally
         {
@@ -199,7 +199,7 @@ public class WorkOrderForm : SecureForm
         catch (Exception ex)
         {
             ErrorLog.Write(ex, id == null ? "新增工单" : "修改工单");
-            UiNotify.Error(OwnerForm as Form ?? this, "打开工单编辑窗口失败，详细信息已写入本地日志。");
+            UiNotify.Error(OwnerForm as Form ?? this, "打开工单编辑窗口失败，详细信息已写入日志。");
         }
     }
 
@@ -232,7 +232,7 @@ public class WorkOrderForm : SecureForm
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "删除工单");
-            UiNotify.Error(OwnerForm as Form ?? this, "删除工单失败，详细信息已写入本地日志。");
+            UiNotify.Error(OwnerForm as Form ?? this, "删除工单失败，详细信息已写入日志。");
         }
     }
 

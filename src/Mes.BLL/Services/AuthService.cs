@@ -23,7 +23,8 @@ public class AuthService
         }
         catch (Exception ex)
         {
-            return ApiResult<LoginResult>.Fail("无法连接数据库：" + ex.Message);
+            var where = string.IsNullOrEmpty(AppHost.DatabaseTarget) ? "" : "（" + AppHost.DatabaseTarget + "）";
+            return ApiResult<LoginResult>.Fail("无法连接数据库" + where + "：" + ex.GetBaseException().Message);
         }
     }
 
@@ -137,7 +138,7 @@ public class AuthService
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "临时授权");
-            return ApiResult<string>.Fail("授权校验失败，详细信息已写入本地日志。");
+            return ApiResult<string>.Fail("授权校验失败，详细信息已写入日志。");
         }
     }
 }

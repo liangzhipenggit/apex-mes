@@ -2277,11 +2277,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\liang\\IndustrialMES\\src\\Mes.WinUI\\Mes.WinUI.csproj",
+      "projectUniqueName": "D:\\IndustrialMES\\src\\Mes.WinUI\\Mes.WinUI.csproj",
       "projectName": "Mes.WinUI",
-      "projectPath": "C:\\Users\\liang\\IndustrialMES\\src\\Mes.WinUI\\Mes.WinUI.csproj",
+      "projectPath": "D:\\IndustrialMES\\src\\Mes.WinUI\\Mes.WinUI.csproj",
       "packagesPath": "C:\\Users\\liang\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\liang\\IndustrialMES\\src\\Mes.WinUI\\obj\\",
+      "outputPath": "D:\\IndustrialMES\\src\\Mes.WinUI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -2302,14 +2302,14 @@
         "net10.0-windows7.0": {
           "targetAlias": "net10.0-windows",
           "projectReferences": {
-            "C:\\Users\\liang\\IndustrialMES\\src\\Mes.BLL\\Mes.BLL.csproj": {
-              "projectPath": "C:\\Users\\liang\\IndustrialMES\\src\\Mes.BLL\\Mes.BLL.csproj"
+            "D:\\IndustrialMES\\src\\Mes.BLL\\Mes.BLL.csproj": {
+              "projectPath": "D:\\IndustrialMES\\src\\Mes.BLL\\Mes.BLL.csproj"
             },
-            "C:\\Users\\liang\\IndustrialMES\\src\\Mes.Common\\Mes.Common.csproj": {
-              "projectPath": "C:\\Users\\liang\\IndustrialMES\\src\\Mes.Common\\Mes.Common.csproj"
+            "D:\\IndustrialMES\\src\\Mes.Common\\Mes.Common.csproj": {
+              "projectPath": "D:\\IndustrialMES\\src\\Mes.Common\\Mes.Common.csproj"
             },
-            "C:\\Users\\liang\\IndustrialMES\\src\\Mes.Models\\Mes.Models.csproj": {
-              "projectPath": "C:\\Users\\liang\\IndustrialMES\\src\\Mes.Models\\Mes.Models.csproj"
+            "D:\\IndustrialMES\\src\\Mes.Models\\Mes.Models.csproj": {
+              "projectPath": "D:\\IndustrialMES\\src\\Mes.Models\\Mes.Models.csproj"
             }
           }
         }
@@ -2659,5 +2659,27 @@
         }
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'MySqlConnector' 2.2.5 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-473q-m89c-ghf8",
+      "libraryId": "MySqlConnector",
+      "targetGraphs": [
+        "net10.0-windows7.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'SQLitePCLRaw.lib.e_sqlite3' 2.1.10 has a known high severity vulnerability, https://github.com/advisories/GHSA-2m69-gcr7-jv3q",
+      "libraryId": "SQLitePCLRaw.lib.e_sqlite3",
+      "targetGraphs": [
+        "net10.0-windows7.0"
+      ]
+    }
+  ]
 }

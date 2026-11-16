@@ -1,0 +1,9 @@
+[2026-11-16 19:44:59] 保存用户
+System.InvalidOperationException: This SqlTransaction has completed; it is no longer usable.
+   at Microsoft.Data.SqlClient.SqlTransaction.ZombieCheck()
+   at Microsoft.Data.SqlClient.SqlTransaction.Rollback()
+   at System.Data.Common.DbTransaction.RollbackAsync(CancellationToken cancellationToken)
+--- End of stack trace from previous location ---
+   at SqlSugar.AdoProvider.RollbackTranAsync()
+   at Mes.BLL.UserService.SaveAsync(UserSaveModel model) in D:\IndustrialMES\src\Mes.BLL\Services\UserService.cs:line 250
+

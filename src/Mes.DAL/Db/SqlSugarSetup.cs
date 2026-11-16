@@ -34,4 +34,13 @@ public static class SqlSugarSetup
 
     public static ISqlSugarClient Db
         => _db ?? throw new InvalidOperationException("数据库未初始化，请先调用 SqlSugarSetup.Init。");
+
+    /// <summary>真正打开一次连接。初始化本身不会连库。</summary>
+    public static void EnsureConnected()
+    {
+        var db = Db;
+        db.Ado.Open();
+        db.Ado.ExecuteCommand("SELECT 1");
+        db.Ado.Close();
+    }
 }

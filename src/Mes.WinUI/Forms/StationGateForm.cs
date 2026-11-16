@@ -1,3 +1,5 @@
+using Mes.BLL;
+
 namespace Mes.WinUI;
 
 /// <summary>
@@ -146,6 +148,12 @@ public class StationGateForm : Form
         _result.Icon = AntdUI.TType.Success;
         _result.TextTitle = "校验通过";
         _result.Text = $"{DateTime.Now:HH:mm:ss}  {source}校验通过：{code}";
+        DbActivityLog.Scan(
+            code,
+            source,
+            source == "串口枪" ? _portName.Text.Trim() : null,
+            true,
+            _result.Text);
     }
 
     private void OpenSerial()
@@ -188,7 +196,7 @@ public class StationGateForm : Form
             _result.Text = $"已授权写入参数（演示）：{code}";
             UiNotify.Success(FindForm(), "PLC 参数写入成功（演示）。");
             return Task.CompletedTask;
-        });
+        }, barcode: code);
     }
 
     private async Task ForcePassAsync()
@@ -200,6 +208,6 @@ public class StationGateForm : Form
             _result.Text = "已授权执行强制过站（演示）。";
             UiNotify.Success(FindForm(), "强制过站已执行（演示）。");
             return Task.CompletedTask;
-        });
+        }, barcode: ScanText.Normalize(_scan.Text));
     }
 }

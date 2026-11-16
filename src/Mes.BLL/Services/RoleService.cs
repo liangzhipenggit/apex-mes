@@ -75,7 +75,7 @@ public class RoleService
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "查询角色");
-            return ApiResult<PageResult<RoleListItem>>.Fail("查询角色失败，详细信息已写入本地日志。");
+            return ApiResult<PageResult<RoleListItem>>.Fail("查询角色失败，详细信息已写入日志。");
         }
     }
 
@@ -99,7 +99,7 @@ public class RoleService
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "列出角色");
-            return ApiResult<List<SysRole>>.Fail("读取角色列表失败，详细信息已写入本地日志。");
+            return ApiResult<List<SysRole>>.Fail("读取角色列表失败，详细信息已写入日志。");
         }
     }
 
@@ -145,7 +145,7 @@ public class RoleService
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "读取角色");
-            return ApiResult<RoleSaveModel>.Fail("读取角色失败，详细信息已写入本地日志。");
+            return ApiResult<RoleSaveModel>.Fail("读取角色失败，详细信息已写入日志。");
         }
     }
 
@@ -217,8 +217,7 @@ public class RoleService
             if (exists)
                 return ApiResult.Fail("角色编码已存在。");
 
-            await dbClient.Ado.BeginTranAsync();
-            try
+            await DbWrite.RunAsync(async tran =>
             {
                 long roleId;
                 if (model.Id == 0)
@@ -231,25 +230,22 @@ public class RoleService
                         CreateTime = DateTime.Now,
                         CreateUserId = AppSession.UserId
                     };
-                    roleId = await dbClient.Insertable(entity).ExecuteReturnBigIdentityAsync();
+                    roleId = await tran.Insertable(entity).ExecuteReturnBigIdentityAsync();
                 }
                 else
                 {
-                    var entity = await dbClient.Queryable<SysRole>().FirstAsync(r => r.Id == model.Id && r.IsDeleted == false);
+                    var entity = await tran.Queryable<SysRole>().FirstAsync(r => r.Id == model.Id && r.IsDeleted == false);
                     if (entity == null)
-                    {
-                        await dbClient.Ado.RollbackTranAsync();
-                        return ApiResult.Fail("角色不存在或已删除。");
-                    }
+                        throw new InvalidOperationException("角色不存在或已删除。");
 
                     entity.RoleName = model.RoleName;
                     entity.RoleCode = model.RoleCode;
                     entity.Enabled = model.Enabled;
                     entity.UpdateTime = DateTime.Now;
                     entity.UpdateUserId = AppSession.UserId;
-                    await dbClient.Updateable(entity).ExecuteCommandAsync();
+                    await tran.Updateable(entity).ExecuteCommandAsync();
                     roleId = entity.Id;
-                    await dbClient.Deleteable<SysRolePermission>().Where(rp => rp.RoleId == roleId).ExecuteCommandAsync();
+                    await tran.Deleteable<SysRolePermission>().Where(rp => rp.RoleId == roleId).ExecuteCommandAsync();
                 }
 
                 if (model.PermissionIds.Count > 0)
@@ -257,22 +253,17 @@ public class RoleService
                     var links = model.PermissionIds.Distinct()
                         .Select(pid => new SysRolePermission { RoleId = roleId, PermissionId = pid })
                         .ToList();
-                    await dbClient.Insertable(links).ExecuteCommandAsync();
+                    await tran.Insertable(links).ExecuteCommandAsync();
                 }
-
-                await dbClient.Ado.CommitTranAsync();
-                return ApiResult.Ok("保存成功。");
-            }
-            catch
-            {
-                await dbClient.Ado.RollbackTranAsync();
-                throw;
-            }
+            });
+            return ApiResult.Ok("保存成功。");
         }
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "保存角色");
-            return ApiResult.Fail("保存角色失败，详细信息已写入本地日志。");
+            if (ex is InvalidOperationException)
+                return ApiResult.Fail(ex.Message);
+            return ApiResult.Fail("保存角色失败，详细信息已写入日志。");
         }
     }
 
@@ -315,7 +306,7 @@ public class RoleService
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "删除角色");
-            return ApiResult.Fail("删除角色失败，详细信息已写入本地日志。");
+            return ApiResult.Fail("删除角色失败，详细信息已写入日志。");
         }
     }
 }

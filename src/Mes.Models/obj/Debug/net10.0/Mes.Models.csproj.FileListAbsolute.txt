@@ -13,3 +13,16 @@ C:\Users\liang\IndustrialMES\src\Mes.Models\obj\Debug\net10.0\ref\Mes.Models.dll
 C:\Users\liang\AppData\Local\Temp\IndustrialMES-buildcheck\Mes.Models.deps.json
 C:\Users\liang\AppData\Local\Temp\IndustrialMES-buildcheck\Mes.Models.dll
 C:\Users\liang\AppData\Local\Temp\IndustrialMES-buildcheck\Mes.Models.pdb
+D:\IndustrialMES\src\Mes.Models\bin\Debug\net10.0\Mes.Models.deps.json
+D:\IndustrialMES\src\Mes.Models\bin\Debug\net10.0\Mes.Models.dll
+D:\IndustrialMES\src\Mes.Models\bin\Debug\net10.0\Mes.Models.pdb
+D:\IndustrialMES\src\Mes.Models\obj\Debug\net10.0\Mes.Models.csproj.AssemblyReference.cache
+D:\IndustrialMES\src\Mes.Models\obj\Debug\net10.0\Mes.Models.GeneratedMSBuildEditorConfig.editorconfig
+D:\IndustrialMES\src\Mes.Models\obj\Debug\net10.0\Mes.Models.AssemblyInfoInputs.cache
+D:\IndustrialMES\src\Mes.Models\obj\Debug\net10.0\Mes.Models.AssemblyInfo.cs
+D:\IndustrialMES\src\Mes.Models\obj\Debug\net10.0\Mes.Models.csproj.CoreCompileInputs.cache
+D:\IndustrialMES\src\Mes.Models\obj\Debug\net10.0\Mes.Models.sourcelink.json
+D:\IndustrialMES\src\Mes.Models\obj\Debug\net10.0\Mes.Models.dll
+D:\IndustrialMES\src\Mes.Models\obj\Debug\net10.0\refint\Mes.Models.dll
+D:\IndustrialMES\src\Mes.Models\obj\Debug\net10.0\Mes.Models.pdb
+D:\IndustrialMES\src\Mes.Models\obj\Debug\net10.0\ref\Mes.Models.dll

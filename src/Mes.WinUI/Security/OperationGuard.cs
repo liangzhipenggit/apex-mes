@@ -14,7 +14,8 @@ public static class OperationGuard
         IWin32Window? owner,
         string operation,
         Func<Task> action,
-        string permissionCode = ElevationPermission)
+        string permissionCode = ElevationPermission,
+        string? barcode = null)
     {
         using var dialog = new ElevationForm(operation);
         if (dialog.ShowDialog(owner) != DialogResult.OK)
@@ -31,12 +32,14 @@ public static class OperationGuard
         try
         {
             await action();
+            DbActivityLog.Risk(operation, barcode, dialog.Account, result.Data, true, null);
             return true;
         }
         catch (Exception ex)
         {
             ErrorLog.Write(ex, operation);
-            UiNotify.Error(owner as Form, operation + "执行失败，详细信息已写入本地日志。");
+            DbActivityLog.Risk(operation, barcode, dialog.Account, result.Data, false, ex.Message);
+            UiNotify.Error(owner as Form, operation + "执行失败，详细信息已写入日志。");
             return false;
         }
     }

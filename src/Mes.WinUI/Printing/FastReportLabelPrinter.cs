@@ -62,7 +62,7 @@ public static class FastReportLabelPrinter
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "FastReport 标签打印");
-            return new PrintOutcome(false, "FastReport 打印失败。请确认已安装 FastReport.Net，详细信息已写入本地日志。");
+            return new PrintOutcome(false, "FastReport 打印失败。请确认已安装 FastReport.Net，详细信息已写入日志。");
         }
     }
 

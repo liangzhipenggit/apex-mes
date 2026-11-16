@@ -22,6 +22,12 @@ public class LoginForm : AntdUI.Window
         Type = AntdUI.TTypeMini.Primary,
         IconSvg = MenuIcons.Action.Login
     };
+    private readonly Label _database = new()
+    {
+        AutoSize = false,
+        TextAlign = ContentAlignment.MiddleCenter,
+        BackColor = Color.Transparent
+    };
     private bool _loggingIn;
 
     public LoginForm()
@@ -92,7 +98,21 @@ public class LoginForm : AntdUI.Window
         _user.Font = UiTheme.ShellFont();
         _password.Font = UiTheme.ShellFont();
 
-        card.Controls.AddRange(brand, subtitle, title, _user, _password, _login);
+        if (string.IsNullOrEmpty(AppHost.DatabaseError))
+        {
+            _database.Text = string.IsNullOrEmpty(AppHost.DatabaseTarget)
+                ? "演示模式，未连接 SQL Server"
+                : "已连接 " + AppHost.DatabaseTarget;
+            _database.ForeColor = Color.FromArgb(56, 158, 13);
+        }
+        else
+        {
+            _database.Text = "数据库未连接：" + AppHost.DatabaseError;
+            _database.ForeColor = Color.FromArgb(207, 19, 34);
+        }
+
+        _database.Font = UiTheme.ShellFont(9F);
+        card.Controls.AddRange(brand, subtitle, title, _database, _user, _password, _login);
         card.Resize += (_, _) => LayoutFields(card, brand, subtitle, title);
 
         var body = new TechBackPanel
@@ -149,7 +169,9 @@ public class LoginForm : AntdUI.Window
         y += subtitle.Height + 12;
         title.TextAlign = ContentAlignment.MiddleCenter;
         title.SetBounds(x, y, w, 36);
-        y += 48;
+        y += 40;
+        _database.SetBounds(x, y, w, 36);
+        y += 40;
 
         _user.SetBounds(x, y, w, UiTheme.ControlHeight);
         y += 56;

@@ -47,7 +47,7 @@ public class MenuService
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "查询菜单");
-            return ApiResult<List<SysPermission>>.Fail("查询菜单失败，详细信息已写入本地日志。");
+            return ApiResult<List<SysPermission>>.Fail("查询菜单失败，详细信息已写入日志。");
         }
     }
 
@@ -73,7 +73,7 @@ public class MenuService
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "读取菜单");
-            return ApiResult<SysPermission>.Fail("读取菜单失败，详细信息已写入本地日志。");
+            return ApiResult<SysPermission>.Fail("读取菜单失败，详细信息已写入日志。");
         }
     }
 
@@ -207,7 +207,7 @@ public class MenuService
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "保存菜单");
-            return ApiResult.Fail("保存菜单失败，详细信息已写入本地日志。");
+            return ApiResult.Fail("保存菜单失败，详细信息已写入日志。");
         }
     }
 
@@ -253,7 +253,7 @@ public class MenuService
         catch (Exception ex)
         {
             ErrorLog.Write(ex, "删除菜单");
-            return ApiResult.Fail("删除菜单失败，详细信息已写入本地日志。");
+            return ApiResult.Fail("删除菜单失败，详细信息已写入日志。");
         }
     }
 
